@@ -1,0 +1,6 @@
+[Unit]
+Description=Checks ASF licenses
+
+[Service]
+Type=oneshot
+ExecStart=/path/to/checker.py

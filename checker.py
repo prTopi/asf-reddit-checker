@@ -1,12 +1,13 @@
 #!/bin/env python3
 from argparse import ArgumentParser
 from configparser import ConfigParser
+from os import path
+from re import compile as compile_
 from requests import post, get
 from requests.auth import HTTPBasicAuth
-from re import compile
 
 config = ConfigParser()
-config.read('config.ini')
+config.read(path.join(path.dirname(path.realpath(__file__)), 'config.ini'))
 
 headers = {'User-Agent': 'ASF license checker by /u/prTopii'}
 tokenClient = HTTPBasicAuth(config['Token']['id'], config['Token']['secret'])
@@ -15,8 +16,7 @@ tokenPost = {'grant_type': 'password', 'username': config['Login']['user'],
 
 ipc = config['DEFAULT']['ipchost']
 licensed = config['DEFAULT']['licensed'].split(',')
-license = compile(r'!addlicense\s.+?,?(((,?|,\s?)\d+)+)')
-
+license = compile_(r'!addlicense\s.+?,?(((,?|,\s?)\d+)+)')
 
 def getReplies(comments):
     output = []
