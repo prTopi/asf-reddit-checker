@@ -6,8 +6,10 @@ from re import compile as compile_
 from requests import post, get
 from requests.auth import HTTPBasicAuth
 
+configPath = path.join(path.dirname(path.realpath(__file__)), 'config.ini')
+
 config = ConfigParser()
-config.read(path.join(path.dirname(path.realpath(__file__)), 'config.ini'))
+config.read(configPath)
 
 headers = {'User-Agent': 'ASF license checker by /u/prTopii'}
 tokenClient = HTTPBasicAuth(config['Token']['id'], config['Token']['secret'])
@@ -73,7 +75,7 @@ def checkSub(subreddits='r/FreeGamesOnSteam'):
         if newIds:
             post(ipc + f'/Api/Command/addlicense%20ASF%20{"%2C".join(newIds)}')
     config['DEFAULT']['licensed'] = ','.join(ids)
-    with open('config.ini', 'w') as f:
+    with open(configPath, 'w') as f:
         config.write(f)
 
 
