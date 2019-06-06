@@ -23,13 +23,16 @@ license = compile_(r'!addlicense\s.+?,?(((,?|,\s?)\d+)+)')
 def getReplies(comments):
     output = []
     for commentInfo in comments['data']['children']:
-        comment = license.search(commentInfo['data']['body'])
-        if comment:
-            output = [c.strip(',').strip(' ') for c in comment[1].split(',')]
-        if commentInfo['data']['replies']:
-            replies = getReplies(commentInfo['data']['replies'])
-            if replies:
-                output.extend(replies)
+        try:
+            comment = license.search(commentInfo['data']['body'])
+            if comment:
+                output = [c.strip(',').strip(' ') for c in comment[1].split(',')]
+            if commentInfo['data']['replies']:
+                replies = getReplies(commentInfo['data']['replies'])
+                if replies:
+                    output.extend(replies)
+        except:
+            pass
     if output:
         return output
 
