@@ -20,18 +20,20 @@ ipc = config['DEFAULT']['ipchost']
 licensed = config['DEFAULT']['licensed'].split(',')
 license = compile_(r'!addlicense\s.+?,?(((,?|,\s?)\d+)+)')
 
+
 def getReplies(comments):
     output = []
     for commentInfo in comments['data']['children']:
         try:
             comment = license.search(commentInfo['data']['body'])
             if comment:
-                output = [c.strip(',').strip(' ') for c in comment[1].split(',')]
+                output = [c.strip(',').strip(' ') for c in
+                          comment[1].split(',')]
             if commentInfo['data']['replies']:
                 replies = getReplies(commentInfo['data']['replies'])
                 if replies:
                     output.extend(replies)
-        except:
+        except Exception:
             pass
     if output:
         return output
